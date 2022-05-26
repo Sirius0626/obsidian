@@ -1,3 +1,4 @@
+## Actor和Component
 ### UObject
 Uobject:UE中所有的类都继承于UObject
 ![[Pasted image 20220505102834.png]]
@@ -116,43 +117,3 @@ void UChildActorComponent::OnComponentCreated()
 }
 ```
 这就导致了一个问题，当你把一个ActorClass拖进Level后，这个Actor实际是已经实例化了,你可以直接调整这个Actor的属性。但是你把它拖到另一个Actor Class里，它只会给你空空白白的ChildActorComponent的DetailsPanel，你想调整Actor的属性，就只能等生成了之后，用蓝图或代码去修改。
-## Level和World
-ULevel继承自UObject，自然会支持蓝图脚本，所以自带了一个`ALevelScriptActor`，允许在关卡里编写脚本，可以管理整个level中的Actor。同时还配有一个Info，记录着本level的各种规则属性，更重要的是，在level需要其他模块一起协助时，info也记录着游戏模式来让UE可以指派。
-![[Pasted image 20220505104338.png]]
-**WorldSetting**
-有一些Actor是不显示的，是不“摆放”在level里面的，但是同样发挥着作用。和level相关的就有AWorldSettings
-![[Pasted image 20220505104607.png]]
-**注意：在ULevel中的`TArray<AActor>Actors`中同样保存着`AWorldSettings`和`ALevelScriptActor`的指针**
-为何AWorldSettings要放进在Actors[0]的位置？而ALevelScriptActor却不用？
-```C++
-void ULevel::SortActorList()
-{
-    //[...]
-    TArray<AActor*> NewActors;
-    TArray<AActor*> NewNetActors;
-    NewActors.Reserve(Actors.Num());
-    NewNetActors.Reserve(Actors.Num());
-    // The WorldSettings tries to stay at index 0
-    NewActors.Add(WorldSettings);
-    // Add non-net actors to the NewActors immediately, cache off the net actors to Append after
-    for (AActor* Actor : Actors)
-    {
-        if (Actor != nullptr && Actor != WorldSettings && !Actor->IsPendingKill())
-        {
-            if (IsNetActor(Actor))
-            {
-                NewNetActors.Add(Actor);
-            }
-            else
-            {
-                NewActors.Add(Actor);
-            }
-        }
-    }
-    iFirstNetRelevantActor = NewActors.Num();
-    NewActors.Append(MoveTemp(NewNetActors));
-    Actors = MoveTemp(NewActors);   // Replace with sorted list.
-    // Add all network actors to the owning world
-    //[...]
-}
-```
