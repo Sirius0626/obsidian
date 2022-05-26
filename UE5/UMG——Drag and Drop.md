@@ -15,7 +15,10 @@ FEventReply
 FReply UdraggableWidget::NationOnMouseButtonDown(const Fgeometry& InGeometry, const FPointerEvent& InMouseEvent)
 ```
 首先获得当前Geometry的局部坐标作为偏移量
-```this->DragOffset == InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition());```
+`
+```cpp
+this->DragOffset == InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition());
+```
 判断当前事件是否是鼠标左键点击事件（InMouseEvent.IsTouchEvent()是触屏模式下的）
 然后选择当前拖拽的widget()(this->GetCachedWidget()获取的就是当前widget嘛？)
 如果当前widget是有效的，则进行拖拽（DetectDrag()函数）
