@@ -1,4 +1,4 @@
-### editor
+## Editor
 #### subprocess.Popen
 ```python
 p = subprocess.Popen(
@@ -54,3 +54,13 @@ subprocess.Popen()用于开启一端进程，其中Popen可用参数如下
 	"PYTHONIOENCODING": "utf-8"
 }
 ```
+
+## CommonWaitLogDialog
+### showWaitOutputDialog()
+### closeWaitOutputDialog()
+## Logger
+### handler
+handler是log的处理器，注意不要直接实例化`Handler`，这个类用来派生其他更有用的子类。但是，子类的`__init__()`方法需要调用`Handler.__init__()`
+
+**`emit(record)`**
+执行实际记录给定日志记录所需的操作。这个版本应由子类实现，因此这里直接引发`NotImplementedError`异常
