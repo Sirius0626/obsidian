@@ -56,11 +56,38 @@ subprocess.Popen()用于开启一端进程，其中Popen可用参数如下
 ```
 
 ## CommonWaitLogDialog
-### showWaitOutputDialog()
-### closeWaitOutputDialog()
+**showWaitOutputDialog()** 和**closeWaitOutputDialog()**
 ## Logger
 ### handler
 handler是log的处理器，注意不要直接实例化`Handler`，这个类用来派生其他更有用的子类。但是，子类的`__init__()`方法需要调用`Handler.__init__()`
 
 **`emit(record)`**
 执行实际记录给定日志记录所需的操作。这个版本应由子类实现，因此这里直接引发`NotImplementedError`异常
+### Formatter
+## QTabWidget
+`__init__(parent: QWidget = None)`
+	Constructs a tabbed widget with parent *parent*
+
+`addTab(QWidget, str) -> int`
+	add a tab with the given *page* and label to the tab widget, and returns the index of  the tab in the tab bar. Ownership of *page* is passed on to the QTabWidget
+	**Note**: If you call after show(), the layout system will try to adjust to the changes in its widgets hierarchy and may cause flicker. To prevent this, you can set the `updatesEnabled()` property to false prior to changes; remember to set the property to true when the changes are done, making the widget receive paint evnets again.
+
+`TabPosition`
+```python
+	class TabPosition(enum.Enum):
+		North = 0
+		South = 1
+		West = 2
+		East = 3
+```
+`tabPosition() -> TabPosition`
+`setTabPosition(TabPosition)`
+
+`TabShape`
+	This enum type defines the shape of the tabs:
+```python
+	class TabShape(enum.Enum):
+		Rounded = 0
+		Triangular = 1
+```
+调用方法同上
